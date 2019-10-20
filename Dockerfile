@@ -1,7 +1,6 @@
 FROM ubuntu:16.04
 MAINTAINER Yasuo Miyoshi <miyoshi@is.kochi-u.ac.jp>
 
-ENV TZ Asia/Tokyo
 ENV DISPLAY docker.for.mac.host.internal:0
 ENV DEBIAN_FRONTEND nointeractive
 ENV DEBCONF_NOWARNINGS yes
@@ -14,7 +13,6 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
     tzdata \
   && rm -rf /var/lib/apt/lists/* \
-  && echo "${TZ}" > /etc/timezone \
   && rm /etc/localtime \
   && ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
   && dpkg-reconfigure -f noninteractive tzdata
@@ -72,8 +70,9 @@ RUN ./configure && make && make install
 
 RUN useradd -d /home/rcsoccersim -m -s /bin/bash rcsoccersim \
   && echo "rcsoccersim:rcsoccersim" | chpasswd
+RUN mkdir -p $RCSS_CONF_DIR $TEAM_DIR $LOG_DIR
+RUN chown -R rcsoccersim:rcsoccersim /home/rcsoccersim
 USER rcsoccersim
-RUN mkdir -p $RCSS_CONF_DIR
 
 VOLUME $TEAM_DIR
 VOLUME $LOG_DIR
