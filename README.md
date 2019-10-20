@@ -39,3 +39,5 @@ https://archive.robocup.info/Soccer/Simulation/2D/binaries/RoboCup/ 下载team�
 (container)$ cd ../cyrus/
 (container)$ ./startAll &
 ~~~
+
+生成好的docker image: https://cloud.docker.com/repository/docker/moliqingwa/rcsoccersim
