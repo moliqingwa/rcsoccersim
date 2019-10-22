@@ -19,13 +19,19 @@ Docker 安装
 
 先启动socat，再启动xquartz。socat流量转发至xquartz
 ~~~console
-(host)$ open -a XQuartz
 (host)$ socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+(host)$ open -a XQuartz
+~~~
+
+
+~~~console
+ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+docker run --rm -d --name rcsoccersim -v /Users/zhenwang/code/git/game/rcsoccersim/teams:/home/rcsoccersim/teams -e DISPLAY=$ip:0 moliqingwa/rcsoccersim
 ~~~
 
 后台运行soccerwindow2， 启动rcssmonitor。
 ~~~console
-(container)$ soccerwindow2 &
+(container)$ soccerwindow2 --field-grass-type=lines --hide-team-grahip --show-player-number --hide-player-type --hide-view-area --hide-pointto --hide-attentionto --hide-stamina --hide-stamina-capacity --show-card --ball-size=1.0 &
 ~~~
 
 https://archive.robocup.info/Soccer/Simulation/2D/binaries/RoboCup/ 下载team文件夹下的文件，并放在本项目teams文件夹下（首次需要创建该文件夹）。
